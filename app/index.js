@@ -2,13 +2,18 @@
 import 'dotenv/config'
 
 /** express */
-import express from 'express'
+import express, { json } from 'express'
 
 /** database connect*/
 import db from './database/db.js'
 
+/** routers */
+import routers from './routers/index.js'
+
 /* init server */
 const app = express()
+app.use(json())
+app.use(routers)
 
 db.connect()
   .then(() => {
