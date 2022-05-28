@@ -5,9 +5,10 @@ import { Router } from 'express'
 const router = Router()
 
 /** categorys controller */
-import { ListCategory } from '../controllers/categories/index.js'
+import { ListCategory, AddCategory } from '../controllers/categories/index.js'
 
 /* categorys */
 router.get('/categories', ListCategory)
+router.post('/categories', AddCategory)
 
 export default router
