@@ -8,7 +8,7 @@ const router = Router()
 import { ListCategory, AddCategory } from '../controllers/categories/index.js'
 
 /** games */
-import { CreateGame } from '../controllers/game/index.js'
+import { CreateGame, ListGame } from '../controllers/game/index.js'
 
 /* categorys */
 router.get('/categories', ListCategory)
@@ -16,5 +16,6 @@ router.post('/categories', AddCategory)
 
 /** games */
 router.post('/games', CreateGame)
+router.get('/games', ListGame)
 
 export default router

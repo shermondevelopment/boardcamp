@@ -7,6 +7,19 @@ import validation from '../../utils/validation.js'
 /** joi */
 import gameValidation from '../../validation/validation-game.js'
 
+export const ListGame = async (req, res) => {
+  try {
+    const name = req.query.name || ''
+    const games = await db.query(
+      `select games.*, categories.name as "categoryName" from games inner join categories on games."categoryId" = categories.id where games.name ilike $1 || '%'`,
+      [name]
+    )
+    res.status(200).json(games.rows)
+  } catch (error) {
+    res.status(500).json({ error: 'internal server error' })
+  }
+}
+
 export const CreateGame = async (req, res) => {
   try {
     const { name, image, stockTotal, categoryId, pricePerDay } = req.body
