@@ -18,6 +18,9 @@ import {
   UpdateCustomer
 } from '../controllers/customers/index.js'
 
+/**rentals  */
+import { ListRentals } from '../controllers/rentals/index.js'
+
 /**middleware  */
 import { validateMiddleware } from '../middlewares/validation.js'
 
@@ -34,5 +37,8 @@ router.put('/customers/:id', validateMiddleware, UpdateCustomer)
 /** games */
 router.post('/games', CreateGame)
 router.get('/games', ListGame)
+
+/** rentals */
+router.get('/rentals', ListRentals)
 
 export default router
