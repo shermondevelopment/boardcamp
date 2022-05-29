@@ -74,7 +74,7 @@ export const CreateRentals = async (req, res) => {
       ]
     )
 
-    res.status(201).json(rentals.rows)
+    res.sendStatus(200)
   } catch (error) {
     res.status(500).json({ error: 'internal server error' })
   }
@@ -124,5 +124,28 @@ export const FinishRentals = async (req, res) => {
     res.sendStatus(200)
   } catch (error) {
     res.status(500).send('interval server error')
+  }
+}
+
+export const DelRentals = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const rentals = await db.query('select * from rentals where id = $1', [id])
+
+    if (rentals.rowCount <= 0) {
+      return res.sendStatus(404)
+    }
+
+    if (rentals.rows[0].returnDate !== null) {
+      return res.sendStatus(400)
+    }
+
+    await db.query('delete from rentals where id = $1', [id])
+
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'internal server error' })
   }
 }

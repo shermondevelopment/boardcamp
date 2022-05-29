@@ -22,7 +22,8 @@ import {
 import {
   ListRentals,
   CreateRentals,
-  FinishRentals
+  FinishRentals,
+  DelRentals
 } from '../controllers/rentals/index.js'
 
 /**middleware  */
@@ -46,5 +47,6 @@ router.get('/games', ListGame)
 router.get('/rentals', ListRentals)
 router.post('/rentals', CreateRentals)
 router.post('/rentals/:id/return', FinishRentals)
+router.delete('/rentals/:id', DelRentals)
 
 export default router
