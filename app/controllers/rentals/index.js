@@ -12,7 +12,15 @@ import { set, differenceInDays } from 'date-fns'
 
 export const ListRentals = async (req, res) => {
   try {
-    const rentals = await db.query('select * from rentals')
+    let customerId = parseInt(req.query.customerId) || 0
+    let vars = []
+
+    let query = customerId
+      ? `select * from rentals where "customerId" = $1`
+      : `select * from rentals`
+    customerId && vars.push(customerId)
+
+    const rentals = await db.query(query, vars)
 
     return res.status(200).json(rentals.rows)
   } catch (error) {
