@@ -75,12 +75,12 @@ export const UpdateCustomer = async (req, res) => {
       cpf
     ])
 
-    if (customer.rowCount > 0) {
+    if (customer.rowCount > 0 && customer.rows[0]?.id !== id) {
       return res.sendStatus(409)
     }
 
     await db.query(
-      'insert into customers (name, phone, cpf, birthday) values($1, $2, $3, $4)',
+      'update customers set name = $1, phone = $2, cpf = $3, birthday = $4',
       [name, phone, cpf, birthday]
     )
     res.sendStatus(200)
