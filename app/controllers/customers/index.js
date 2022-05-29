@@ -21,3 +21,18 @@ export const CreateCustomer = async (req, res) => {
     res.status(500).json({ error: 'internal server error' })
   }
 }
+
+export const ListCustomer = async (req, res) => {
+  try {
+    const cpf = req.query.cpf || ''
+
+    const customers = await db.query(
+      `select * from customers where cpf like $1 || '%'`,
+      [cpf]
+    )
+
+    res.status(200).json(customers.rows)
+  } catch (error) {
+    res.status(500).json({ error: 'internal server error' })
+  }
+}
