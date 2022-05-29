@@ -14,7 +14,8 @@ import { CreateGame, ListGame } from '../controllers/game/index.js'
 import {
   CreateCustomer,
   ListCustomer,
-  ListCustomerId
+  ListCustomerId,
+  UpdateCustomer
 } from '../controllers/customers/index.js'
 
 /**middleware  */
@@ -28,6 +29,7 @@ router.post('/categories', AddCategory)
 router.post('/customers', validateMiddleware, CreateCustomer)
 router.get('/customers', ListCustomer)
 router.get('/customers/:id', ListCustomerId)
+router.put('/customers/:id', validateMiddleware, UpdateCustomer)
 
 /** games */
 router.post('/games', CreateGame)

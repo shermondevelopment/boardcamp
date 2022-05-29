@@ -59,3 +59,32 @@ export const ListCustomerId = async (req, res) => {
     res.status(500).json({ error: 'internal server error' })
   }
 }
+
+export const UpdateCustomer = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    if (!id) {
+      return res.status(400).json({ error: 'id is requried' })
+    }
+
+    const { name, phone, cpf, birthday } = res.locals.customer
+
+    const customer = await db.query('select * from customers where cpf = $1', [
+      cpf
+    ])
+
+    if (customer.rowCount > 0) {
+      return res.sendStatus(409)
+    }
+
+    await db.query(
+      'insert into customers (name, phone, cpf, birthday) values($1, $2, $3, $4)',
+      [name, phone, cpf, birthday]
+    )
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'internal server error' })
+  }
+}
