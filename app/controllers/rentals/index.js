@@ -14,6 +14,7 @@ export const ListRentals = async (req, res) => {
   try {
     let customerId = parseInt(req.query.customerId) || 0
     let vars = []
+    let result = []
 
     let query = customerId
       ? `select * from rentals where "customerId" = $1`
@@ -22,8 +23,27 @@ export const ListRentals = async (req, res) => {
 
     const rentals = await db.query(query, vars)
 
-    return res.status(200).json(rentals.rows)
+    const game = await db.query(
+      'select id, name, "categoryId", name as "categoryName" from games where id = $1',
+      [rentals.rows[0]?.gameId]
+    )
+
+    const customer = await db.query(
+      'select id, name from customers where id = $1',
+      [rentals.rows[0]?.customerId]
+    )
+
+    for (let i = 0; i < rentals.rowCount; i++) {
+      result.push({
+        ...rentals.rows[0],
+        game: game.rows[0],
+        customer: customer.rows[0]
+      })
+    }
+
+    return res.status(200).json(result)
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'internal server error' })
   }
 }
@@ -145,7 +165,6 @@ export const DelRentals = async (req, res) => {
 
     res.sendStatus(200)
   } catch (error) {
-    console.log(error)
     res.status(500).json({ error: 'internal server error' })
   }
 }
